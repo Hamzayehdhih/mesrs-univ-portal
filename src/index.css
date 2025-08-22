@@ -219,7 +219,7 @@
   }
   
   .mesrs-stat-card {
-    @apply mesrs-card p-6 hover:scale-105 transition-all duration-300 hover:shadow-xl;
+    @apply modern-card p-6 hover:scale-105 transition-all duration-300 hover:shadow-xl;
   }
   
   .mesrs-sidebar-item {
