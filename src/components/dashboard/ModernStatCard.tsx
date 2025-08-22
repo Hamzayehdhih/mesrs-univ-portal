@@ -53,7 +53,7 @@ const ModernStatCard = ({
       }}
       whileTap={{ scale: 0.98 }}
       className={cn(
-        "stat-card-modern stat-card-glow particle-effect relative overflow-hidden cursor-pointer",
+        "stat-card-modern stat-card-glow particle-effect group relative overflow-hidden cursor-pointer",
         variantStyles[variant],
         className
       )}

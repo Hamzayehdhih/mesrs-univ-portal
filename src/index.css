@@ -155,7 +155,7 @@
   }
 
   .stat-card-modern {
-    @apply rounded-3xl overflow-hidden relative group cursor-pointer transition-all duration-500 hover:scale-[1.05] hover:-rotate-1;
+    @apply rounded-3xl overflow-hidden relative cursor-pointer transition-all duration-500 hover:scale-[1.05] hover:-rotate-1;
   }
 
   .stat-card-glow {
