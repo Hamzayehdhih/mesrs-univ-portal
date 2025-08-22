@@ -7,19 +7,19 @@
 
 @layer base {
   :root {
-    /* Couleurs Inspirées du Logo Mauritanien */
-    --primary: 0 65% 45%; /* Rouge bordeaux du logo */
+    /* Couleurs Système Vert Principal */
+    --primary: 142 76% 42%; /* Vert principal éclatant */
     --primary-foreground: 0 0% 98%;
-    --primary-light: 0 65% 55%;
-    --primary-dark: 0 65% 35%;
-    --primary-glow: 0 65% 60%;
+    --primary-light: 142 76% 52%;
+    --primary-dark: 142 76% 32%;
+    --primary-glow: 142 76% 58%;
     
-    --secondary: 142 76% 36%; /* Vert du croissant et étoile */
+    --secondary: 200 50% 45%; /* Bleu complémentaire */
     --secondary-foreground: 0 0% 98%;
-    --secondary-light: 142 76% 46%;
-    --secondary-dark: 142 76% 26%;
+    --secondary-light: 200 50% 55%;
+    --secondary-dark: 200 50% 35%;
     
-    --accent: 45 95% 58%; /* Doré de l'étoile */
+    --accent: 45 95% 58%; /* Doré pour les accents */
     --accent-foreground: 0 0% 9%;
     --accent-light: 45 95% 68%;
     
@@ -41,7 +41,7 @@
     
     --border: 214 32% 91%;
     --input: 214 32% 91%;
-    --ring: 0 65% 45%;
+    --ring: 142 76% 42%;
     
     --radius: 0.75rem;
     
@@ -64,28 +64,28 @@
     --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     --transition-bounce: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
 
-    /* Sidebar MESRS - Couleurs du Logo */
-    --sidebar-background: 0 65% 45%; /* Rouge bordeaux */
+    /* Sidebar MESRS - Couleurs Vert Principal */
+    --sidebar-background: 142 76% 42%; /* Vert principal */
     --sidebar-foreground: 0 0% 100%;
     --sidebar-primary: 45 95% 58%; /* Doré */
     --sidebar-primary-foreground: 0 0% 0%;
-    --sidebar-accent: 0 65% 35%; /* Rouge bordeaux foncé */
+    --sidebar-accent: 142 76% 32%; /* Vert foncé */
     --sidebar-accent-foreground: 0 0% 100%;
-    --sidebar-border: 0 65% 35%;
+    --sidebar-border: 142 76% 32%;
     --sidebar-ring: 45 95% 58%;
   }
 
   .dark {
-    /* Couleurs Mode Sombre - Inspirées du Logo */
-    --primary: 0 65% 50%; /* Rouge bordeaux légèrement plus clair */
+    /* Couleurs Mode Sombre - Système Vert */
+    --primary: 142 76% 48%; /* Vert principal lumineux pour le sombre */
     --primary-foreground: 0 0% 100%;
-    --primary-light: 0 65% 60%;
-    --primary-dark: 0 65% 40%;
+    --primary-light: 142 76% 58%;
+    --primary-dark: 142 76% 38%;
     
-    --secondary: 142 76% 42%; /* Vert plus lumineux */
+    --secondary: 200 50% 50%; /* Bleu complémentaire lumineux */
     --secondary-foreground: 0 0% 100%;
-    --secondary-light: 142 76% 52%;
-    --secondary-dark: 142 76% 32%;
+    --secondary-light: 200 50% 60%;
+    --secondary-dark: 200 50% 40%;
     
     --accent: 45 95% 65%; /* Doré plus lumineux */
     --accent-foreground: 0 0% 0%;
@@ -108,15 +108,15 @@
 
     --border: 217 33% 18%;
     --input: 217 33% 18%;
-    --ring: 0 65% 50%;
+    --ring: 142 76% 48%;
 
-    --sidebar-background: 0 65% 40%;
+    --sidebar-background: 142 76% 38%;
     --sidebar-foreground: 0 0% 98%;
     --sidebar-primary: 45 95% 65%;
     --sidebar-primary-foreground: 0 0% 0%;
-    --sidebar-accent: 0 65% 30%;
+    --sidebar-accent: 142 76% 28%;
     --sidebar-accent-foreground: 0 0% 98%;
-    --sidebar-border: 0 65% 25%;
+    --sidebar-border: 142 76% 25%;
     --sidebar-ring: 45 95% 65%;
   }
 }
