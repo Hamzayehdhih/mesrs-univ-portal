@@ -83,6 +83,7 @@ export default {
 				'primary': 'var(--shadow-primary)',
 				'secondary': 'var(--shadow-secondary)',
 				'glass': 'var(--shadow-glass)',
+				'modern': 'var(--shadow-modern)',
 			},
 			transitionTimingFunction: {
 				'bounce': 'cubic-bezier(0.68, -0.55, 0.265, 1.55)',
