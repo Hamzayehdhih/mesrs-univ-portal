@@ -7,21 +7,21 @@
 
 @layer base {
   :root {
-    /* Modern Professional Colors */
-    --primary: 158 64% 52%; /* #10B981 Vert émeraude moderne */
+    /* Couleurs Inspirées du Logo Mauritanien */
+    --primary: 0 65% 45%; /* Rouge bordeaux du logo */
     --primary-foreground: 0 0% 98%;
-    --primary-light: 158 64% 65%;
-    --primary-dark: 158 64% 40%;
-    --primary-glow: 158 64% 70%;
+    --primary-light: 0 65% 55%;
+    --primary-dark: 0 65% 35%;
+    --primary-glow: 0 65% 60%;
     
-    --secondary: 43 96% 56%; /* #F59E0B Doré moderne */
-    --secondary-foreground: 0 0% 9%;
-    --secondary-light: 43 96% 70%;
-    --secondary-dark: 43 96% 45%;
+    --secondary: 142 76% 36%; /* Vert du croissant et étoile */
+    --secondary-foreground: 0 0% 98%;
+    --secondary-light: 142 76% 46%;
+    --secondary-dark: 142 76% 26%;
     
-    --accent: 217 91% 60%; /* #3B82F6 Bleu moderne */
-    --accent-foreground: 0 0% 98%;
-    --accent-light: 217 91% 75%;
+    --accent: 45 95% 58%; /* Doré de l'étoile */
+    --accent-foreground: 0 0% 9%;
+    --accent-light: 45 95% 68%;
     
     /* System Colors */
     --background: 0 0% 100%;
@@ -41,7 +41,7 @@
     
     --border: 214 32% 91%;
     --input: 214 32% 91%;
-    --ring: 144 100% 19%;
+    --ring: 0 65% 45%;
     
     --radius: 0.75rem;
     
@@ -64,59 +64,60 @@
     --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     --transition-bounce: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
 
-    /* Sidebar MESRS */
-    --sidebar-background: 144 100% 19%;
+    /* Sidebar MESRS - Couleurs du Logo */
+    --sidebar-background: 0 65% 45%; /* Rouge bordeaux */
     --sidebar-foreground: 0 0% 100%;
-    --sidebar-primary: 45 100% 58%;
+    --sidebar-primary: 45 95% 58%; /* Doré */
     --sidebar-primary-foreground: 0 0% 0%;
-    --sidebar-accent: 144 100% 25%;
+    --sidebar-accent: 0 65% 35%; /* Rouge bordeaux foncé */
     --sidebar-accent-foreground: 0 0% 100%;
-    --sidebar-border: 144 100% 15%;
-    --sidebar-ring: 45 100% 58%;
+    --sidebar-border: 0 65% 35%;
+    --sidebar-ring: 45 95% 58%;
   }
 
   .dark {
-    --primary: 144 100% 25%;
+    /* Couleurs Mode Sombre - Inspirées du Logo */
+    --primary: 0 65% 50%; /* Rouge bordeaux légèrement plus clair */
     --primary-foreground: 0 0% 100%;
-    --primary-light: 144 100% 35%;
-    --primary-dark: 144 100% 12%;
+    --primary-light: 0 65% 60%;
+    --primary-dark: 0 65% 40%;
     
-    --secondary: 45 100% 65%;
-    --secondary-foreground: 0 0% 0%;
-    --secondary-light: 45 100% 75%;
-    --secondary-dark: 45 100% 50%;
+    --secondary: 142 76% 42%; /* Vert plus lumineux */
+    --secondary-foreground: 0 0% 100%;
+    --secondary-light: 142 76% 52%;
+    --secondary-dark: 142 76% 32%;
     
-    --accent: 351 88% 50%;
-    --accent-foreground: 0 0% 100%;
-    --accent-light: 351 88% 65%;
-    
+    --accent: 45 95% 65%; /* Doré plus lumineux */
+    --accent-foreground: 0 0% 0%;
+    --accent-light: 45 95% 75%;
+
     --background: 210 40% 5%;
     --foreground: 0 0% 98%;
-    
+
     --card: 210 40% 8%;
     --card-foreground: 0 0% 98%;
-    
+
     --popover: 210 40% 8%;
     --popover-foreground: 0 0% 98%;
-    
+
     --muted: 217 33% 18%;
     --muted-foreground: 215 20% 65%;
-    
+
     --destructive: 0 63% 31%;
     --destructive-foreground: 0 0% 98%;
-    
+
     --border: 217 33% 18%;
     --input: 217 33% 18%;
-    --ring: 144 100% 25%;
-    
-    --sidebar-background: 144 100% 12%;
+    --ring: 0 65% 50%;
+
+    --sidebar-background: 0 65% 40%;
     --sidebar-foreground: 0 0% 98%;
-    --sidebar-primary: 45 100% 65%;
+    --sidebar-primary: 45 95% 65%;
     --sidebar-primary-foreground: 0 0% 0%;
-    --sidebar-accent: 144 100% 18%;
+    --sidebar-accent: 0 65% 30%;
     --sidebar-accent-foreground: 0 0% 98%;
-    --sidebar-border: 144 100% 8%;
-    --sidebar-ring: 45 100% 65%;
+    --sidebar-border: 0 65% 25%;
+    --sidebar-ring: 45 95% 65%;
   }
 }
 

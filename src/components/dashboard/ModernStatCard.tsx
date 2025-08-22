@@ -17,12 +17,12 @@ interface ModernStatCardProps {
 }
 
 const variantStyles = {
-  primary: 'bg-gradient-to-br from-emerald-500 via-emerald-600 to-emerald-700 text-white shadow-primary',
-  secondary: 'bg-gradient-to-br from-amber-400 via-amber-500 to-amber-600 text-white shadow-secondary',
-  accent: 'bg-gradient-to-br from-blue-500 via-blue-600 to-blue-700 text-white shadow-accent',
-  success: 'bg-gradient-to-br from-green-500 via-green-600 to-green-700 text-white',
-  warning: 'bg-gradient-to-br from-orange-400 via-orange-500 to-orange-600 text-white',
-  info: 'bg-gradient-to-br from-indigo-500 via-indigo-600 to-indigo-700 text-white',
+  primary: 'bg-gradient-to-br from-primary via-primary to-primary-dark text-primary-foreground shadow-primary',
+  secondary: 'bg-gradient-to-br from-secondary via-secondary to-secondary-dark text-secondary-foreground shadow-secondary',
+  accent: 'bg-gradient-to-br from-accent to-accent-light text-accent-foreground shadow-accent',
+  success: 'bg-gradient-to-br from-secondary via-secondary to-secondary-dark text-secondary-foreground shadow-secondary',
+  warning: 'bg-gradient-to-br from-accent via-accent to-accent-light text-accent-foreground shadow-accent',
+  info: 'bg-gradient-to-br from-primary-light via-primary to-primary-dark text-primary-foreground shadow-primary',
 };
 
 const ModernStatCard = ({ 
@@ -140,7 +140,7 @@ const ModernStatCard = ({
                 <motion.div 
                   className={cn(
                     "flex items-center text-xs font-medium",
-                    trend.isPositive ? "text-green-200" : "text-red-200"
+                    trend.isPositive ? "text-secondary/80" : "text-primary/80"
                   )}
                   initial={{ opacity: 0, x: -20 }}
                   animate={{ opacity: 1, x: 0 }}
@@ -149,7 +149,7 @@ const ModernStatCard = ({
                   <motion.span 
                     className={cn(
                       "mr-2 text-lg",
-                      trend.isPositive ? "text-green-300" : "text-red-300"
+                      trend.isPositive ? "text-secondary" : "text-primary"
                     )}
                     animate={{
                       y: trend.isPositive ? [-2, 2, -2] : [2, -2, 2],
