@@ -148,6 +148,7 @@
   }
 }
 
+@layer components {
   /* Modern Components */
   .modern-card {
     @apply rounded-3xl bg-white/90 backdrop-blur-xl border border-white/20 shadow-modern transition-all duration-500 hover:shadow-primary hover:-translate-y-2 hover:bg-white/95;
