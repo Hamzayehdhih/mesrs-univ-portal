@@ -6,7 +6,14 @@ import {
   UserCheck, 
   BookOpen 
 } from 'lucide-react';
-import StatCard from '@/components/dashboard/StatCard';
+import { motion } from 'framer-motion';
+import { toast } from '@/hooks/use-toast';
+import ModernStatCard from '@/components/dashboard/ModernStatCard';
+import KPIWidget from '@/components/dashboard/KPIWidget';
+import DashboardHeader from '@/components/dashboard/DashboardHeader';
+import FloatingActionCard from '@/components/dashboard/FloatingActionCard';
+import ActivityTimeline from '@/components/dashboard/ActivityTimeline';
+import PerformanceWeather from '@/components/dashboard/PerformanceWeather';
 import EnrollmentChart from '@/components/charts/EnrollmentChart';
 import UniversityPieChart from '@/components/charts/UniversityPieChart';
 import FacultyBarChart from '@/components/charts/FacultyBarChart';
@@ -34,6 +41,42 @@ const Dashboard = ({ language }: DashboardProps) => {
 
   const currentTexts = welcomeText[language];
 
+  // Mock sparkline data for demonstration
+  const sparklineData = Array.from({ length: 12 }, (_, i) => ({
+    value: Math.random() * 100 + 50
+  }));
+
+  // Handler functions for the dashboard
+  const handleTimeFilterChange = (filter: string) => {
+    toast({
+      title: language === 'ar' ? 'تم تطبيق المرشح' : 'Filtre appliqué',
+      description: `${filter} ${language === 'ar' ? 'فترة' : 'période'}`,
+    });
+  };
+
+  const handleRefresh = async () => {
+    // Simulate API call
+    await new Promise(resolve => setTimeout(resolve, 1000));
+    toast({
+      title: language === 'ar' ? 'تم التحديث' : 'Actualisé',
+      description: language === 'ar' ? 'البيانات محدثة' : 'Données mises à jour',
+    });
+  };
+
+  const handleExport = (type: 'pdf' | 'excel') => {
+    toast({
+      title: language === 'ar' ? 'جاري التصدير' : 'Export en cours',
+      description: `${type.toUpperCase()} ${language === 'ar' ? 'ملف' : 'file'}`,
+    });
+  };
+
+  const handleActionClick = (action: string) => {
+    toast({
+      title: language === 'ar' ? 'إجراء سريع' : 'Action rapide',
+      description: action,
+    });
+  };
+
   return (
     <div className="flex-1 space-y-6 p-6 animate-fade-in-up">
       {/* Welcome Section */}
@@ -47,6 +90,16 @@ const Dashboard = ({ language }: DashboardProps) => {
           </p>
         </div>
       </div>
+
+      {/* Modern Dashboard Header */}
+      <DashboardHeader
+        language={language}
+        onTimeFilterChange={handleTimeFilterChange}
+        onRefresh={handleRefresh}
+        onExport={handleExport}
+        isComparisonMode={false}
+        onComparisonToggle={() => {}}
+      />
 
       {/* Statistics Cards - System Overview */}
       <div className="relative">
@@ -80,29 +133,73 @@ const Dashboard = ({ language }: DashboardProps) => {
               {dashboardStats.map((stat, index) => {
                 const Icon = icons[index];
                 return (
-                  <div
+                  <ModernStatCard
                     key={stat.title}
-                    className="group relative animate-fade-in-up hover:scale-105 transition-all duration-500"
-                    style={{animationDelay: `${index * 150}ms`}}
-                  >
-                    {/* Glow effect on hover */}
-                    <div className="absolute inset-0 bg-gradient-to-r from-primary/20 via-secondary/20 to-accent/20 rounded-xl blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 -z-10"></div>
-                    
-                    <StatCard
-                      title={language === 'ar' ? stat.titleAr : stat.title}
-                      value={stat.value}
-                      subtitle={stat.subtitle}
-                      icon={Icon}
-                      trend={stat.trend}
-                      variant={stat.variant}
-                      className="relative z-10 border-2 border-transparent group-hover:border-primary/30 transition-all duration-300"
-                    />
-                  </div>
+                    title={language === 'ar' ? stat.titleAr : stat.title}
+                    value={stat.value}
+                    subtitle={stat.subtitle}
+                    icon={Icon}
+                    trend={stat.trend}
+                    variant={stat.variant}
+                    sparklineData={sparklineData}
+                    index={index}
+                  />
                 );
               })}
             </div>
           </div>
         </div>
+      </div>
+
+      {/* KPI Widgets Section */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.3 }}
+        className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6"
+      >
+        <KPIWidget
+          title={language === 'ar' ? 'معدل النجاح' : 'Taux de Réussite'}
+          value={87}
+          maxValue={100}
+          unit="%"
+          type="circular"
+          color="success"
+          index={0}
+        />
+        <KPIWidget
+          title={language === 'ar' ? 'نسبة الطلاب/الأساتذة' : 'Ratio Étu./Ens.'}
+          value={24}
+          maxValue={30}
+          type="gauge"
+          color="primary"
+          index={1}
+        />
+        <KPIWidget
+          title={language === 'ar' ? 'إشغال القاعات' : 'Occupation Salles'}
+          value={78}
+          maxValue={100}
+          unit="%"
+          type="progress"
+          color="warning"
+          index={2}
+        />
+        <KPIWidget
+          title={language === 'ar' ? 'الأداء المؤسسي' : 'Performance Inst.'}
+          value={91}
+          maxValue={100}
+          type="circular"
+          color="secondary"
+          index={3}
+        />
+      </motion.div>
+
+      {/* Performance Weather & Timeline */}
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
+        <div className="lg:col-span-2">
+          <PerformanceWeather language={language} />
+        </div>
+        <ActivityTimeline language={language} />
       </div>
 
       {/* Charts Section */}
@@ -128,53 +225,55 @@ const Dashboard = ({ language }: DashboardProps) => {
         />
       </div>
 
-      {/* Quick Actions */}
-      <div className="mesrs-card p-6">
-        <h3 className={`text-lg font-semibold mb-4 ${language === 'ar' ? 'font-arabic text-right' : 'font-latin'}`}>
+      {/* Floating Quick Actions */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.6 }}
+        className="mesrs-card p-6"
+      >
+        <h3 className={`text-lg font-semibold mb-6 ${language === 'ar' ? 'font-arabic text-right' : 'font-latin'}`}>
           {language === 'ar' ? 'الإجراءات السريعة' : 'Actions Rapides'}
         </h3>
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
           {[
             { 
               label: language === 'ar' ? 'تسجيل طالب جديد' : 'Nouveau Étudiant',
+              description: language === 'ar' ? 'إضافة طالب جديد للنظام' : 'Ajouter un étudiant au système',
               icon: Users,
-              color: 'primary'
+              color: 'primary' as const
             },
             { 
               label: language === 'ar' ? 'إضافة أستاذ' : 'Ajouter Enseignant',
+              description: language === 'ar' ? 'تسجيل أستاذ جديد' : 'Enregistrer un nouvel enseignant',
               icon: UserCheck,
-              color: 'secondary'
+              color: 'secondary' as const
             },
             { 
               label: language === 'ar' ? 'إنشاء تكوين' : 'Créer Formation',
+              description: language === 'ar' ? 'إضافة برنامج تكويني' : 'Ajouter un programme de formation',
               icon: BookOpen,
-              color: 'accent'
+              color: 'accent' as const
             },
             { 
               label: language === 'ar' ? 'منح دراسية' : 'Bourses d\'Études',
+              description: language === 'ar' ? 'إدارة المنح الدراسية' : 'Gérer les bourses d\'études',
               icon: Wallet,
-              color: 'success'
+              color: 'success' as const
             },
-          ].map((action, index) => {
-            const Icon = action.icon;
-            return (
-              <button
-                key={action.label}
-                className="p-4 rounded-xl border border-border/20 hover:border-primary/40 transition-all duration-200 hover:scale-105 group"
-              >
-                <div className="flex flex-col items-center gap-2 text-center">
-                  <div className="p-3 rounded-lg bg-primary/10 group-hover:bg-primary/20 transition-colors">
-                    <Icon className="h-6 w-6 text-primary" />
-                  </div>
-                  <span className="text-xs font-medium text-foreground">
-                    {action.label}
-                  </span>
-                </div>
-              </button>
-            );
-          })}
+          ].map((action, index) => (
+            <FloatingActionCard
+              key={action.label}
+              label={action.label}
+              description={action.description}
+              icon={action.icon}
+              color={action.color}
+              onClick={() => handleActionClick(action.label)}
+              index={index}
+            />
+          ))}
         </div>
-      </div>
+      </motion.div>
     </div>
   );
 };
