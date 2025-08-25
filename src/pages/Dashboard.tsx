@@ -6,8 +6,7 @@ import {
   UserCheck, 
   BookOpen 
 } from 'lucide-react';
-import { motion } from 'framer-motion';
-import ModernStatCard from '@/components/dashboard/ModernStatCard';
+import StatCard from '@/components/dashboard/StatCard';
 import EnrollmentChart from '@/components/charts/EnrollmentChart';
 import UniversityPieChart from '@/components/charts/UniversityPieChart';
 import FacultyBarChart from '@/components/charts/FacultyBarChart';
@@ -36,50 +35,29 @@ const Dashboard = ({ language }: DashboardProps) => {
   const currentTexts = welcomeText[language];
 
   return (
-    <div className="flex-1 space-y-8 p-6 gradient-mesh min-h-screen">
+    <div className="flex-1 space-y-6 p-6 animate-fade-in-up">
       {/* Welcome Section */}
-      <motion.div 
-        className="modern-card p-8 glassmorphism border border-white/30"
-        initial={{ opacity: 0, y: -50 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.8, type: "spring" }}
-      >
+      <div className="mesrs-card p-6 gradient-glass border border-primary/20">
         <div className={`${language === 'ar' ? 'text-right' : 'text-left'}`}>
-          <motion.h1 
-            className={`text-responsive-2xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent mb-3 ${language === 'ar' ? 'font-arabic' : 'font-latin'}`}
-            initial={{ opacity: 0, scale: 0.5 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ delay: 0.3, duration: 0.6 }}
-          >
+          <h1 className={`text-responsive-2xl font-bold text-primary mb-2 ${language === 'ar' ? 'font-arabic' : 'font-latin'}`}>
             {currentTexts.title}
-          </motion.h1>
-          <motion.p 
-            className="text-responsive-base text-muted-foreground font-latin"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.5, duration: 0.6 }}
-          >
+          </h1>
+          <p className="text-responsive-base text-muted-foreground font-latin">
             {currentTexts.subtitle}
-          </motion.p>
+          </p>
         </div>
-      </motion.div>
+      </div>
 
       {/* Statistics Cards */}
-      <div className="space-y-6">
-        <motion.h2 
-          className={`text-2xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent ${language === 'ar' ? 'font-arabic text-right' : 'font-latin'}`}
-          initial={{ opacity: 0, x: -50 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ delay: 0.7, duration: 0.6 }}
-        >
+      <div>
+        <h2 className={`text-xl font-semibold mb-4 ${language === 'ar' ? 'font-arabic text-right' : 'font-latin'}`}>
           {currentTexts.overview}
-        </motion.h2>
-        
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        </h2>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {dashboardStats.map((stat, index) => {
             const Icon = icons[index];
             return (
-              <ModernStatCard
+              <StatCard
                 key={stat.title}
                 title={language === 'ar' ? stat.titleAr : stat.title}
                 value={stat.value}
@@ -87,7 +65,7 @@ const Dashboard = ({ language }: DashboardProps) => {
                 icon={Icon}
                 trend={stat.trend}
                 variant={stat.variant}
-                delay={index * 0.1}
+                className={`animate-fade-in-up`}
               />
             );
           })}

@@ -7,21 +7,20 @@
 
 @layer base {
   :root {
-    /* Couleurs Système Vert Principal */
-    --primary: 142 76% 42%; /* Vert principal éclatant */
-    --primary-foreground: 0 0% 98%;
-    --primary-light: 142 76% 52%;
-    --primary-dark: 142 76% 32%;
-    --primary-glow: 142 76% 58%;
+    /* MESRS Official Colors */
+    --primary: 144 100% 19%; /* Green #006233 */
+    --primary-foreground: 0 0% 100%;
+    --primary-light: 144 100% 33%; /* Green #00A652 */
+    --primary-dark: 144 100% 15%;
     
-    --secondary: 200 50% 45%; /* Bleu complémentaire */
-    --secondary-foreground: 0 0% 98%;
-    --secondary-light: 200 50% 55%;
-    --secondary-dark: 200 50% 35%;
+    --secondary: 45 100% 58%; /* Gold #FFC72C */
+    --secondary-foreground: 0 0% 0%;
+    --secondary-light: 45 100% 70%;
+    --secondary-dark: 45 100% 45%;
     
-    --accent: 45 95% 58%; /* Doré pour les accents */
-    --accent-foreground: 0 0% 9%;
-    --accent-light: 45 95% 68%;
+    --accent: 351 88% 41%; /* Red #CE1126 */
+    --accent-foreground: 0 0% 100%;
+    --accent-light: 351 88% 55%;
     
     /* System Colors */
     --background: 0 0% 100%;
@@ -41,83 +40,78 @@
     
     --border: 214 32% 91%;
     --input: 214 32% 91%;
-    --ring: 142 76% 42%;
+    --ring: 144 100% 19%;
     
     --radius: 0.75rem;
     
-    /* Modern Gradients */
-    --gradient-primary: linear-gradient(135deg, hsl(var(--primary)) 0%, hsl(var(--primary-glow)) 100%);
-    --gradient-secondary: linear-gradient(135deg, hsl(var(--secondary)) 0%, hsl(var(--secondary-light)) 100%);
-    --gradient-accent: linear-gradient(135deg, hsl(var(--accent)) 0%, hsl(var(--accent-light)) 100%);
-    --gradient-glass: linear-gradient(135deg, rgba(255, 255, 255, 0.15) 0%, rgba(255, 255, 255, 0.05) 100%);
-    --gradient-mesh: radial-gradient(circle at 25% 25%, hsl(var(--primary) / 0.1) 0%, transparent 50%),
-                     radial-gradient(circle at 75% 75%, hsl(var(--secondary) / 0.1) 0%, transparent 50%);
+    /* MESRS Gradients */
+    --gradient-primary: linear-gradient(135deg, hsl(var(--primary)), hsl(var(--primary-light)));
+    --gradient-secondary: linear-gradient(135deg, hsl(var(--secondary-dark)), hsl(var(--secondary)));
+    --gradient-accent: linear-gradient(135deg, hsl(var(--accent)), hsl(var(--accent-light)));
+    --gradient-glass: linear-gradient(135deg, hsla(var(--primary), 0.1), hsla(var(--primary-light), 0.05));
     
-    /* Enhanced Shadows */
-    --shadow-primary: 0 20px 40px -12px hsl(var(--primary) / 0.4);
-    --shadow-secondary: 0 20px 40px -12px hsl(var(--secondary) / 0.4);
-    --shadow-accent: 0 20px 40px -12px hsl(var(--accent) / 0.4);
-    --shadow-glass: 0 8px 32px 0 rgba(31, 38, 135, 0.15);
-    --shadow-modern: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    /* MESRS Shadows */
+    --shadow-primary: 0 10px 30px -10px hsl(var(--primary) / 0.3);
+    --shadow-secondary: 0 10px 30px -10px hsl(var(--secondary) / 0.3);
+    --shadow-glass: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
     
     /* Animations */
     --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     --transition-bounce: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
 
-    /* Sidebar MESRS - Couleurs Vert Principal */
-    --sidebar-background: 142 76% 42%; /* Vert principal */
+    /* Sidebar MESRS */
+    --sidebar-background: 144 100% 19%;
     --sidebar-foreground: 0 0% 100%;
-    --sidebar-primary: 45 95% 58%; /* Doré */
+    --sidebar-primary: 45 100% 58%;
     --sidebar-primary-foreground: 0 0% 0%;
-    --sidebar-accent: 142 76% 32%; /* Vert foncé */
+    --sidebar-accent: 144 100% 25%;
     --sidebar-accent-foreground: 0 0% 100%;
-    --sidebar-border: 142 76% 32%;
-    --sidebar-ring: 45 95% 58%;
+    --sidebar-border: 144 100% 15%;
+    --sidebar-ring: 45 100% 58%;
   }
 
   .dark {
-    /* Couleurs Mode Sombre - Système Vert */
-    --primary: 142 76% 48%; /* Vert principal lumineux pour le sombre */
+    --primary: 144 100% 25%;
     --primary-foreground: 0 0% 100%;
-    --primary-light: 142 76% 58%;
-    --primary-dark: 142 76% 38%;
+    --primary-light: 144 100% 35%;
+    --primary-dark: 144 100% 12%;
     
-    --secondary: 200 50% 50%; /* Bleu complémentaire lumineux */
-    --secondary-foreground: 0 0% 100%;
-    --secondary-light: 200 50% 60%;
-    --secondary-dark: 200 50% 40%;
+    --secondary: 45 100% 65%;
+    --secondary-foreground: 0 0% 0%;
+    --secondary-light: 45 100% 75%;
+    --secondary-dark: 45 100% 50%;
     
-    --accent: 45 95% 65%; /* Doré plus lumineux */
-    --accent-foreground: 0 0% 0%;
-    --accent-light: 45 95% 75%;
-
+    --accent: 351 88% 50%;
+    --accent-foreground: 0 0% 100%;
+    --accent-light: 351 88% 65%;
+    
     --background: 210 40% 5%;
     --foreground: 0 0% 98%;
-
+    
     --card: 210 40% 8%;
     --card-foreground: 0 0% 98%;
-
+    
     --popover: 210 40% 8%;
     --popover-foreground: 0 0% 98%;
-
+    
     --muted: 217 33% 18%;
     --muted-foreground: 215 20% 65%;
-
+    
     --destructive: 0 63% 31%;
     --destructive-foreground: 0 0% 98%;
-
+    
     --border: 217 33% 18%;
     --input: 217 33% 18%;
-    --ring: 142 76% 48%;
-
-    --sidebar-background: 142 76% 38%;
+    --ring: 144 100% 25%;
+    
+    --sidebar-background: 144 100% 12%;
     --sidebar-foreground: 0 0% 98%;
-    --sidebar-primary: 45 95% 65%;
+    --sidebar-primary: 45 100% 65%;
     --sidebar-primary-foreground: 0 0% 0%;
-    --sidebar-accent: 142 76% 28%;
+    --sidebar-accent: 144 100% 18%;
     --sidebar-accent-foreground: 0 0% 98%;
-    --sidebar-border: 142 76% 25%;
-    --sidebar-ring: 45 95% 65%;
+    --sidebar-border: 144 100% 8%;
+    --sidebar-ring: 45 100% 65%;
   }
 }
 
@@ -150,61 +144,9 @@
 }
 
 @layer components {
-  /* Modern Components */
-  .modern-card {
-    @apply rounded-3xl bg-white/90 backdrop-blur-xl border border-white/20 shadow-modern transition-all duration-500 hover:shadow-primary hover:-translate-y-2 hover:bg-white/95;
-  }
-
-  .stat-card-modern {
-    @apply rounded-3xl overflow-hidden relative cursor-pointer transition-all duration-500 hover:scale-[1.05] hover:-rotate-1;
-  }
-
-  .stat-card-glow {
-    @apply before:absolute before:inset-0 before:rounded-3xl before:bg-gradient-to-r before:from-transparent before:via-white/20 before:to-transparent before:translate-x-[-100%] hover:before:translate-x-[100%] before:transition-transform before:duration-1000;
-  }
-
-  .button-modern {
-    @apply rounded-2xl px-8 py-4 font-semibold transition-all duration-300 hover:scale-110 active:scale-95 shadow-modern hover:shadow-lg;
-  }
-
-  .glassmorphism {
-    @apply bg-white/10 backdrop-blur-xl border border-white/20 shadow-glass;
-  }
-
-  .gradient-mesh {
-    background: var(--gradient-mesh);
-  }
-
-  .floating-animation {
-    animation: float 3s ease-in-out infinite;
-  }
-
-  @keyframes float {
-    0%, 100% { transform: translateY(0px) rotate(0deg); }
-    33% { transform: translateY(-10px) rotate(1deg); }
-    66% { transform: translateY(-5px) rotate(-1deg); }
-  }
-
-  .particle-effect {
-    position: relative;
-    overflow: hidden;
-  }
-
-  .particle-effect::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: radial-gradient(circle, rgba(255,255,255,0.1) 1px, transparent 1px);
-    background-size: 20px 20px;
-    animation: particles 20s linear infinite;
-  }
-
-  @keyframes particles {
-    0% { transform: translateY(0px) translateX(0px); }
-    100% { transform: translateY(-100px) translateX(50px); }
+  /* MESRS Component Styles */
+  .mesrs-card {
+    @apply bg-card border border-border/20 rounded-xl shadow-lg backdrop-blur-sm;
   }
   
   .mesrs-button-primary {
@@ -220,7 +162,7 @@
   }
   
   .mesrs-stat-card {
-    @apply modern-card p-6 hover:scale-105 transition-all duration-300 hover:shadow-xl;
+    @apply mesrs-card p-6 hover:scale-105 transition-all duration-300 hover:shadow-xl;
   }
   
   .mesrs-sidebar-item {
