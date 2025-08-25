@@ -48,27 +48,60 @@ const Dashboard = ({ language }: DashboardProps) => {
         </div>
       </div>
 
-      {/* Statistics Cards */}
-      <div>
-        <h2 className={`text-xl font-semibold mb-4 ${language === 'ar' ? 'font-arabic text-right' : 'font-latin'}`}>
-          {currentTexts.overview}
-        </h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {dashboardStats.map((stat, index) => {
-            const Icon = icons[index];
-            return (
-              <StatCard
-                key={stat.title}
-                title={language === 'ar' ? stat.titleAr : stat.title}
-                value={stat.value}
-                subtitle={stat.subtitle}
-                icon={Icon}
-                trend={stat.trend}
-                variant={stat.variant}
-                className={`animate-fade-in-up`}
-              />
-            );
-          })}
+      {/* Statistics Cards - System Overview */}
+      <div className="relative">
+        {/* Background decoration */}
+        <div className="absolute inset-0 bg-gradient-to-r from-primary/5 via-secondary/5 to-accent/5 rounded-2xl blur-3xl -z-10"></div>
+        
+        <div className="mesrs-card p-8 relative overflow-hidden">
+          {/* Animated background pattern */}
+          <div className="absolute inset-0 opacity-10">
+            <div className="absolute top-0 left-0 w-32 h-32 bg-primary rounded-full blur-3xl animate-pulse-slow"></div>
+            <div className="absolute bottom-0 right-0 w-40 h-40 bg-secondary rounded-full blur-3xl animate-pulse-slow" style={{animationDelay: '1s'}}></div>
+            <div className="absolute top-1/2 left-1/2 w-24 h-24 bg-accent rounded-full blur-2xl animate-pulse-slow" style={{animationDelay: '2s'}}></div>
+          </div>
+          
+          <div className="relative z-10">
+            <div className="flex items-center gap-4 mb-8">
+              <div className="p-3 rounded-xl bg-gradient-primary shadow-lg">
+                <TrendingUp className="h-6 w-6 text-white" />
+              </div>
+              <div>
+                <h2 className={`text-2xl font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent ${language === 'ar' ? 'font-arabic text-right' : 'font-latin'}`}>
+                  {currentTexts.overview}
+                </h2>
+                <p className="text-muted-foreground text-sm">
+                  {language === 'ar' ? 'إحصائيات النظام المباشرة' : 'Statistiques du système en temps réel'}
+                </p>
+              </div>
+            </div>
+            
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {dashboardStats.map((stat, index) => {
+                const Icon = icons[index];
+                return (
+                  <div
+                    key={stat.title}
+                    className="group relative animate-fade-in-up hover:scale-105 transition-all duration-500"
+                    style={{animationDelay: `${index * 150}ms`}}
+                  >
+                    {/* Glow effect on hover */}
+                    <div className="absolute inset-0 bg-gradient-to-r from-primary/20 via-secondary/20 to-accent/20 rounded-xl blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 -z-10"></div>
+                    
+                    <StatCard
+                      title={language === 'ar' ? stat.titleAr : stat.title}
+                      value={stat.value}
+                      subtitle={stat.subtitle}
+                      icon={Icon}
+                      trend={stat.trend}
+                      variant={stat.variant}
+                      className="relative z-10 border-2 border-transparent group-hover:border-primary/30 transition-all duration-300"
+                    />
+                  </div>
+                );
+              })}
+            </div>
+          </div>
         </div>
       </div>
 
