@@ -760,6 +760,33 @@ export type Database = {
           student_count: number
         }[]
       }
+      get_enrollment_trends: {
+        Args: { months_back?: number }
+        Returns: {
+          month_year: string
+          new_enrollments: number
+        }[]
+      }
+      get_formation_performance: {
+        Args: Record<PropertyKey, never>
+        Returns: {
+          average_gpa: number
+          formation_name: string
+          pass_rate: number
+          total_students: number
+        }[]
+      }
+      get_recent_activities: {
+        Args: { limit_count?: number }
+        Returns: {
+          action: string
+          created_at: string
+          details: Json
+          resource_id: string
+          resource_type: string
+          user_name: string
+        }[]
+      }
       get_university_stats: {
         Args: Record<PropertyKey, never>
         Returns: {
