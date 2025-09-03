@@ -7,7 +7,7 @@ import {
   BookOpen 
 } from 'lucide-react';
 import { motion } from 'framer-motion';
-import { toast } from 'sonner';
+import { toast } from '@/hooks/use-toast';
 import ModernStatCard from '@/components/dashboard/ModernStatCard';
 import KPIWidget from '@/components/dashboard/KPIWidget';
 import DashboardHeader from '@/components/dashboard/DashboardHeader';
@@ -17,33 +17,14 @@ import PerformanceWeather from '@/components/dashboard/PerformanceWeather';
 import EnrollmentChart from '@/components/charts/EnrollmentChart';
 import UniversityPieChart from '@/components/charts/UniversityPieChart';
 import FacultyBarChart from '@/components/charts/FacultyBarChart';
-import { LoadingSpinner } from '@/components/ui/loading-spinner';
-import { 
-  useDashboardStats, 
-  useEnrollmentTrends, 
-  useEnrollmentStatsByFormation,
-  useUniversityStats,
-  useRecentActivities,
-  useMonthlyGrowthStats,
-  useSuccessRate
-} from '@/hooks/useDashboard';
-import { useAuthContext } from '@/components/auth/AuthProvider';
+import { dashboardStats, chartData } from '@/data/mockData';
 
 interface DashboardProps {
   language: 'ar' | 'fr';
 }
 
 const Dashboard = ({ language }: DashboardProps) => {
-  const { profile } = useAuthContext();
-  
-  // Fetch real data from Supabase
-  const { data: dashboardStats, isLoading: statsLoading, error: statsError } = useDashboardStats();
-  const { data: enrollmentTrends, isLoading: trendsLoading } = useEnrollmentTrends();
-  const { data: formationStats, isLoading: formationLoading } = useEnrollmentStatsByFormation();
-  const { data: universityStats, isLoading: universityLoading } = useUniversityStats();
-  const { data: recentActivities, isLoading: activitiesLoading } = useRecentActivities();
-  const { data: growthStats, isLoading: growthLoading } = useMonthlyGrowthStats();
-  const { data: successRate, isLoading: successLoading } = useSuccessRate();
+  const icons = [Users, GraduationCap, TrendingUp, Wallet, UserCheck, BookOpen];
   
   const welcomeText = {
     ar: {
@@ -67,123 +48,34 @@ const Dashboard = ({ language }: DashboardProps) => {
 
   // Handler functions for the dashboard
   const handleTimeFilterChange = (filter: string) => {
-    toast.success(
-      `${filter} ${language === 'ar' ? 'فترة' : 'période'} - ${language === 'ar' ? 'تم تطبيق المرشح' : 'Filtre appliqué'}`
-    );
+    toast({
+      title: language === 'ar' ? 'تم تطبيق المرشح' : 'Filtre appliqué',
+      description: `${filter} ${language === 'ar' ? 'فترة' : 'période'}`,
+    });
   };
 
   const handleRefresh = async () => {
     // Simulate API call
     await new Promise(resolve => setTimeout(resolve, 1000));
-    toast.success(
-      language === 'ar' ? 'البيانات محدثة' : 'Données mises à jour'
-    );
+    toast({
+      title: language === 'ar' ? 'تم التحديث' : 'Actualisé',
+      description: language === 'ar' ? 'البيانات محدثة' : 'Données mises à jour',
+    });
   };
 
   const handleExport = (type: 'pdf' | 'excel') => {
-    toast.success(
-      `${type.toUpperCase()} ${language === 'ar' ? 'ملف - جاري التصدير' : 'file - Export en cours'}`
-    );
+    toast({
+      title: language === 'ar' ? 'جاري التصدير' : 'Export en cours',
+      description: `${type.toUpperCase()} ${language === 'ar' ? 'ملف' : 'file'}`,
+    });
   };
 
   const handleActionClick = (action: string) => {
-    toast.success(`${language === 'ar' ? 'إجراء سريع' : 'Action rapide'}: ${action}`);
+    toast({
+      title: language === 'ar' ? 'إجراء سريع' : 'Action rapide',
+      description: action,
+    });
   };
-
-  // Show loading state
-  if (statsLoading) {
-    return (
-      <div className="flex items-center justify-center min-h-[400px]">
-        <LoadingSpinner size="lg" />
-      </div>
-    );
-  }
-
-  // Show error state
-  if (statsError) {
-    return (
-      <div className="flex items-center justify-center min-h-[400px]">
-        <div className="text-center">
-          <p className="text-destructive mb-4">Erreur lors du chargement des données</p>
-          <button onClick={() => window.location.reload()} className="text-primary underline">
-            Réessayer
-          </button>
-        </div>
-      </div>
-    );
-  }
-
-  // Transform real data into display format
-  const icons = [Users, GraduationCap, TrendingUp, Wallet, UserCheck, BookOpen];
-  const realStats = dashboardStats ? [
-    {
-      title: 'Total Étudiants',
-      titleAr: 'إجمالي الطلاب',
-      value: dashboardStats.total_students,
-      subtitle: `+${growthStats?.newStudentsThisMonth || 0} ce mois`,
-      trend: { value: growthStats?.studentGrowth || 0, isPositive: (growthStats?.studentGrowth || 0) >= 0 },
-      variant: 'primary' as const
-    },
-    {
-      title: 'Enseignants',
-      titleAr: 'الأساتذة',
-      value: dashboardStats.total_teachers,
-      subtitle: 'Personnel enseignant',
-      trend: { value: 2.1, isPositive: true },
-      variant: 'secondary' as const
-    },
-    {
-      title: 'Universités',
-      titleAr: 'الجامعات',
-      value: dashboardStats.total_universities,
-      subtitle: 'Établissements actifs',
-      trend: { value: 0, isPositive: true },
-      variant: 'accent' as const
-    },
-    {
-      title: 'Formations',
-      titleAr: 'التكوينات',
-      value: dashboardStats.total_formations,
-      subtitle: 'Programmes disponibles',
-      trend: { value: 5.8, isPositive: true },
-      variant: 'success' as const
-    },
-    {
-      title: 'Inscriptions',
-      titleAr: 'التسجيلات',
-      value: dashboardStats.pending_enrollments,
-      subtitle: 'En attente',
-      trend: { value: growthStats?.enrollmentGrowth || 0, isPositive: (growthStats?.enrollmentGrowth || 0) >= 0 },
-      variant: 'warning' as const
-    },
-    {
-      title: 'Bourses',
-      titleAr: 'المنح',
-      value: dashboardStats.active_scholarships,
-      subtitle: 'Programmes actifs',
-      trend: { value: 1.2, isPositive: true },
-      variant: 'info' as const
-    }
-  ] : [];
-
-  // Transform chart data
-  const enrollmentChartData = enrollmentTrends?.map((trend, index) => ({
-    month: trend.month_year,
-    students: trend.new_enrollments,
-    year: new Date().getFullYear()
-  })) || [];
-
-  const universityChartData = universityStats?.map((stat, index) => ({
-    name: stat.university_name,
-    students: stat.student_count,
-    color: `hsl(${(index * 137.5) % 360}, 70%, 50%)`
-  })) || [];
-
-  const facultyChartData = formationStats?.map((stat, index) => ({
-    faculty: stat.formation_name,
-    students: stat.student_count,
-    color: `hsl(${(index * 137.5) % 360}, 70%, 50%)`
-  })) || [];
 
   return (
     <div className="flex-1 space-y-6 p-6 animate-fade-in-up">
@@ -238,7 +130,7 @@ const Dashboard = ({ language }: DashboardProps) => {
             </div>
             
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {realStats.map((stat, index) => {
+              {dashboardStats.map((stat, index) => {
                 const Icon = icons[index];
                 return (
                   <ModernStatCard
@@ -268,7 +160,7 @@ const Dashboard = ({ language }: DashboardProps) => {
       >
         <KPIWidget
           title={language === 'ar' ? 'معدل النجاح' : 'Taux de Réussite'}
-          value={successRate || 0}
+          value={87}
           maxValue={100}
           unit="%"
           type="circular"
@@ -277,7 +169,7 @@ const Dashboard = ({ language }: DashboardProps) => {
         />
         <KPIWidget
           title={language === 'ar' ? 'نسبة الطلاب/الأساتذة' : 'Ratio Étu./Ens.'}
-          value={dashboardStats ? Math.round(dashboardStats.total_students / Math.max(dashboardStats.total_teachers, 1)) : 0}
+          value={24}
           maxValue={30}
           type="gauge"
           color="primary"
@@ -307,16 +199,7 @@ const Dashboard = ({ language }: DashboardProps) => {
         <div className="lg:col-span-2">
           <PerformanceWeather language={language} />
         </div>
-        <ActivityTimeline 
-          language={language} 
-          activities={recentActivities?.map(activity => ({
-            id: activity.resource_id || 'unknown',
-            type: (activity.resource_type as "student" | "teacher" | "course" | "exam" | "document") || 'student',
-            title: activity.action,
-            description: activity.user_name || 'Utilisateur',
-            timestamp: new Date(activity.created_at)
-          })) || []} 
-        />
+        <ActivityTimeline language={language} />
       </div>
 
       {/* Charts Section */}
@@ -324,20 +207,20 @@ const Dashboard = ({ language }: DashboardProps) => {
         {/* Enrollment Trend Chart */}
         <div className="lg:col-span-2">
           <EnrollmentChart 
-            data={enrollmentChartData} 
+            data={chartData.enrollmentTrend} 
             language={language}
           />
         </div>
         
         {/* University Distribution */}
         <UniversityPieChart 
-          data={universityChartData} 
+          data={chartData.universityDistribution} 
           language={language}
         />
         
         {/* Faculty Statistics */}
         <FacultyBarChart 
-          data={facultyChartData} 
+          data={chartData.facultyStats} 
           language={language}
         />
       </div>
