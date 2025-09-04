@@ -17,7 +17,13 @@ import PerformanceWeather from '@/components/dashboard/PerformanceWeather';
 import EnrollmentChart from '@/components/charts/EnrollmentChart';
 import UniversityPieChart from '@/components/charts/UniversityPieChart';
 import FacultyBarChart from '@/components/charts/FacultyBarChart';
-import { dashboardStats, chartData } from '@/data/mockData';
+import { 
+  useDashboardStats, 
+  useEnrollmentTrends, 
+  useFormationStats, 
+  useUniversityStats,
+  useRecentActivities 
+} from '@/hooks/useDashboardStats';
 
 interface DashboardProps {
   language: 'ar' | 'fr';
@@ -25,6 +31,13 @@ interface DashboardProps {
 
 const Dashboard = ({ language }: DashboardProps) => {
   const icons = [Users, GraduationCap, TrendingUp, Wallet, UserCheck, BookOpen];
+  
+  // Fetch real data from Supabase
+  const { data: dashboardStats, isLoading: statsLoading } = useDashboardStats();
+  const { data: enrollmentTrends, isLoading: trendsLoading } = useEnrollmentTrends();
+  const { data: formationStats, isLoading: formationLoading } = useFormationStats();
+  const { data: universityStats, isLoading: universityLoading } = useUniversityStats();
+  const { data: recentActivities, isLoading: activitiesLoading } = useRecentActivities();
   
   const welcomeText = {
     ar: {
@@ -130,22 +143,95 @@ const Dashboard = ({ language }: DashboardProps) => {
             </div>
             
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {dashboardStats.map((stat, index) => {
-                const Icon = icons[index];
-                return (
-                  <ModernStatCard
-                    key={stat.title}
-                    title={language === 'ar' ? stat.titleAr : stat.title}
-                    value={stat.value}
-                    subtitle={stat.subtitle}
-                    icon={Icon}
-                    trend={stat.trend}
-                    variant={stat.variant}
-                    sparklineData={sparklineData}
-                    index={index}
-                  />
-                );
-              })}
+              {statsLoading ? (
+                // Loading state
+                Array.from({ length: 6 }).map((_, index) => (
+                  <div key={index} className="mesrs-card p-6 animate-pulse">
+                    <div className="flex items-start justify-between">
+                      <div className="space-y-2 flex-1">
+                        <div className="h-4 bg-muted rounded w-3/4"></div>
+                        <div className="h-8 bg-muted rounded w-1/2"></div>
+                        <div className="h-3 bg-muted rounded w-2/3"></div>
+                      </div>
+                      <div className="w-12 h-12 bg-muted rounded-lg"></div>
+                    </div>
+                  </div>
+                ))
+              ) : dashboardStats ? (
+                // Real data
+                [
+                  {
+                    title: language === 'ar' ? 'إجمالي الطلاب' : 'Total Étudiants',
+                    titleAr: 'إجمالي الطلاب',
+                    value: dashboardStats.total_students,
+                    subtitle: language === 'ar' ? 'طالب مسجل' : 'étudiants inscrits',
+                    variant: 'primary' as const,
+                    trend: { value: 5.2, isPositive: true }
+                  },
+                  {
+                    title: language === 'ar' ? 'إجمالي الأساتذة' : 'Total Enseignants', 
+                    titleAr: 'إجمالي الأساتذة',
+                    value: dashboardStats.total_teachers,
+                    subtitle: language === 'ar' ? 'أستاذ نشط' : 'enseignants actifs',
+                    variant: 'secondary' as const,
+                    trend: { value: 2.1, isPositive: true }
+                  },
+                  {
+                    title: language === 'ar' ? 'الجامعات النشطة' : 'Universités Actives',
+                    titleAr: 'الجامعات النشطة',
+                    value: dashboardStats.total_universities,
+                    subtitle: language === 'ar' ? 'مؤسسة تعليمية' : 'établissements',
+                    variant: 'accent' as const,
+                    trend: { value: 0, isPositive: true }
+                  },
+                  {
+                    title: language === 'ar' ? 'التكوينات المتاحة' : 'Formations Disponibles',
+                    titleAr: 'التكوينات المتاحة',
+                    value: dashboardStats.total_formations,
+                    subtitle: language === 'ar' ? 'برنامج تكويني' : 'programmes',
+                    variant: 'success' as const,
+                    trend: { value: 1.8, isPositive: true }
+                  },
+                  {
+                    title: language === 'ar' ? 'الطلبات المعلقة' : 'Inscriptions en Attente',
+                    titleAr: 'الطلبات المعلقة',
+                    value: dashboardStats.pending_enrollments,
+                    subtitle: language === 'ar' ? 'طلب معلق' : 'en attente',
+                    variant: 'warning' as const,
+                    trend: { value: -12.5, isPositive: false }
+                  },
+                  {
+                    title: language === 'ar' ? 'المنح النشطة' : 'Bourses Actives',
+                    titleAr: 'المنح النشطة', 
+                    value: dashboardStats.active_scholarships,
+                    subtitle: language === 'ar' ? 'منحة متاحة' : 'bourses disponibles',
+                    variant: 'info' as const,
+                    trend: { value: 8.3, isPositive: true }
+                  }
+                ].map((stat, index) => {
+                  const Icon = icons[index];
+                  return (
+                    <ModernStatCard
+                      key={stat.title}
+                      title={language === 'ar' ? stat.titleAr : stat.title}
+                      value={stat.value}
+                      subtitle={stat.subtitle}
+                      icon={Icon}
+                      trend={stat.trend}
+                      variant={stat.variant}
+                      sparklineData={sparklineData}
+                      index={index}
+                    />
+                  );
+                })
+              ) : (
+                // Error state
+                <div className="col-span-full text-center p-8">
+                  <p className="text-muted-foreground">
+                    {language === 'ar' ? 'خطأ في تحميل البيانات' : 'Erreur lors du chargement des données'}
+                  </p>
+                </div>
+              )}
             </div>
           </div>
         </div>
@@ -206,23 +292,48 @@ const Dashboard = ({ language }: DashboardProps) => {
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Enrollment Trend Chart */}
         <div className="lg:col-span-2">
-          <EnrollmentChart 
-            data={chartData.enrollmentTrend} 
-            language={language}
-          />
+          {trendsLoading ? (
+            <div className="mesrs-card p-6 animate-pulse">
+              <div className="h-6 bg-muted rounded w-1/3 mb-4"></div>
+              <div className="h-64 bg-muted rounded"></div>
+            </div>
+          ) : (
+            <EnrollmentChart 
+              data={enrollmentTrends || []} 
+              language={language}
+            />
+          )}
         </div>
         
         {/* University Distribution */}
-        <UniversityPieChart 
-          data={chartData.universityDistribution} 
-          language={language}
-        />
+        {universityLoading ? (
+          <div className="mesrs-card p-6 animate-pulse">
+            <div className="h-6 bg-muted rounded w-1/3 mb-4"></div>
+            <div className="h-64 bg-muted rounded-full mx-auto w-64"></div>
+          </div>
+        ) : (
+          <UniversityPieChart 
+            data={universityStats || []} 
+            language={language}
+          />
+        )}
         
-        {/* Faculty Statistics */}
-        <FacultyBarChart 
-          data={chartData.facultyStats} 
-          language={language}
-        />
+        {/* Formation Statistics */}
+        {formationLoading ? (
+          <div className="mesrs-card p-6 animate-pulse">
+            <div className="h-6 bg-muted rounded w-1/3 mb-4"></div>
+            <div className="space-y-3">
+              {Array.from({ length: 5 }).map((_, i) => (
+                <div key={i} className="h-8 bg-muted rounded"></div>
+              ))}
+            </div>
+          </div>
+        ) : (
+          <FacultyBarChart 
+            data={formationStats || []} 
+            language={language}
+          />
+        )}
       </div>
 
       {/* Floating Quick Actions */}
