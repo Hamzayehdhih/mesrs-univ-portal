@@ -285,7 +285,10 @@ const Dashboard = ({ language }: DashboardProps) => {
         <div className="lg:col-span-2">
           <PerformanceWeather language={language} />
         </div>
-        <ActivityTimeline language={language} />
+        <ActivityTimeline 
+          language={language} 
+          activities={recentActivities} 
+        />
       </div>
 
       {/* Charts Section */}
