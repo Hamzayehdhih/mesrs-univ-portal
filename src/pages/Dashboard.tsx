@@ -17,7 +17,7 @@ import PerformanceWeather from '@/components/dashboard/PerformanceWeather';
 import EnrollmentChart from '@/components/charts/EnrollmentChart';
 import UniversityPieChart from '@/components/charts/UniversityPieChart';
 import FacultyBarChart from '@/components/charts/FacultyBarChart';
-import { dashboardStats, chartData } from '@/data/mockData';
+import useDashboardData from '@/hooks/useDashboardData';
 
 interface DashboardProps {
   language: 'ar' | 'fr';
@@ -25,6 +25,16 @@ interface DashboardProps {
 
 const Dashboard = ({ language }: DashboardProps) => {
   const icons = [Users, GraduationCap, TrendingUp, Wallet, UserCheck, BookOpen];
+  const { 
+    stats, 
+    enrollmentTrend, 
+    universityDistribution, 
+    facultyStats, 
+    activities, 
+    loading, 
+    error, 
+    refreshData 
+  } = useDashboardData();
   
   const welcomeText = {
     ar: {
@@ -46,6 +56,58 @@ const Dashboard = ({ language }: DashboardProps) => {
     value: Math.random() * 100 + 50
   }));
 
+  // Create dashboard stats from real data
+  const dashboardStats = stats ? [
+    {
+      title: "Total Étudiants",
+      titleAr: "مجموع الطلاب",
+      value: stats.totalStudents,
+      subtitle: "Inscrits 2024-2025",
+      trend: { value: 8.2, isPositive: true },
+      variant: 'primary' as const
+    },
+    {
+      title: "Universités Actives",
+      titleAr: "الجامعات النشطة",
+      value: stats.totalUniversities,
+      subtitle: "Établissements publics",
+      trend: { value: 2.1, isPositive: true },
+      variant: 'secondary' as const
+    },
+    {
+      title: "Formations Actives",
+      titleAr: "التكوينات النشطة",
+      value: stats.totalFormations,
+      subtitle: "Programmes disponibles",
+      trend: { value: 3.4, isPositive: true },
+      variant: 'success' as const
+    },
+    {
+      title: "Bourses Disponibles",
+      titleAr: "المنح المتاحة",
+      value: stats.totalScholarships,
+      subtitle: "Pour l'année courante",
+      trend: { value: 12.8, isPositive: true },
+      variant: 'info' as const
+    },
+    {
+      title: "Corps Professoral",
+      titleAr: "الهيئة التدريسية",
+      value: stats.totalTeachers,
+      subtitle: "Enseignants actifs",
+      trend: { value: 5.7, isPositive: true },
+      variant: 'warning' as const
+    },
+    {
+      title: "Inscriptions Actives",
+      titleAr: "التسجيلات النشطة",
+      value: stats.totalEnrollments,
+      subtitle: "Année courante",
+      trend: { value: 1.2, isPositive: true },
+      variant: 'accent' as const
+    }
+  ] : [];
+
   // Handler functions for the dashboard
   const handleTimeFilterChange = (filter: string) => {
     toast({
@@ -55,8 +117,7 @@ const Dashboard = ({ language }: DashboardProps) => {
   };
 
   const handleRefresh = async () => {
-    // Simulate API call
-    await new Promise(resolve => setTimeout(resolve, 1000));
+    await refreshData();
     toast({
       title: language === 'ar' ? 'تم التحديث' : 'Actualisé',
       description: language === 'ar' ? 'البيانات محدثة' : 'Données mises à jour',
@@ -76,6 +137,37 @@ const Dashboard = ({ language }: DashboardProps) => {
       description: action,
     });
   };
+
+  // Helper functions for activity data transformation
+  function getActionText(action: string, resourceType: string, lang: 'ar' | 'fr'): string {
+    const actionMap = {
+      CREATE: lang === 'ar' ? 'تم إنشاء' : 'Créé',
+      UPDATE: lang === 'ar' ? 'تم تحديث' : 'Mis à jour',
+      DELETE: lang === 'ar' ? 'تم حذف' : 'Supprimé',
+      APPROVE: lang === 'ar' ? 'تم الموافقة' : 'Approuvé'
+    };
+    
+    const resourceMap = {
+      student: lang === 'ar' ? 'طالب' : 'étudiant',
+      teacher: lang === 'ar' ? 'أستاذ' : 'enseignant',
+      scholarship_application: lang === 'ar' ? 'طلب منحة' : 'demande de bourse',
+      enrollment: lang === 'ar' ? 'تسجيل' : 'inscription'
+    };
+
+    return `${actionMap[action as keyof typeof actionMap] || action} ${resourceMap[resourceType as keyof typeof resourceMap] || resourceType}`;
+  }
+
+  function getActivityType(resourceType: string): 'student' | 'course' | 'exam' | 'document' | 'teacher' {
+    const typeMap = {
+      student: 'student' as const,
+      teacher: 'teacher' as const,
+      scholarship_application: 'document' as const,
+      enrollment: 'course' as const,
+      course: 'course' as const,
+      exam: 'exam' as const
+    };
+    return typeMap[resourceType as keyof typeof typeMap] || 'document' as const;
+  }
 
   return (
     <div className="flex-1 space-y-6 p-6 animate-fade-in-up">
@@ -199,7 +291,17 @@ const Dashboard = ({ language }: DashboardProps) => {
         <div className="lg:col-span-2">
           <PerformanceWeather language={language} />
         </div>
-        <ActivityTimeline language={language} />
+        <ActivityTimeline 
+          language={language} 
+          activities={activities.map(activity => ({
+            id: activity.id,
+            type: getActivityType(activity.resourceType),
+            title: getActionText(activity.action, activity.resourceType, language),
+            description: activity.details?.formation || activity.details?.student_number || 'Activité système',
+            timestamp: new Date(activity.timestamp),
+            user: activity.userName
+          }))}
+        />
       </div>
 
       {/* Charts Section */}
@@ -207,20 +309,20 @@ const Dashboard = ({ language }: DashboardProps) => {
         {/* Enrollment Trend Chart */}
         <div className="lg:col-span-2">
           <EnrollmentChart 
-            data={chartData.enrollmentTrend} 
+            data={enrollmentTrend} 
             language={language}
           />
         </div>
         
         {/* University Distribution */}
         <UniversityPieChart 
-          data={chartData.universityDistribution} 
+          data={universityDistribution} 
           language={language}
         />
         
         {/* Faculty Statistics */}
         <FacultyBarChart 
-          data={chartData.facultyStats} 
+          data={facultyStats} 
           language={language}
         />
       </div>
